@@ -262,6 +262,9 @@ async function startTurn() {
   }
 
   recognition.onresult = async (event) => {
+    // FIX 1: Ignore late results if we've already moved on (e.g. user canceled)
+    if (turnState !== "listening") return;
+
     const transcript = event.results[0][0].transcript.trim();
     stopMicMeter();
 
@@ -346,7 +349,12 @@ function cancelTurn() {
 // Controls
 // ============================================================
 orb.addEventListener("click", () => {
-  if (turnState === "idle") startTurn();
+  // FIX 2: Allow tapping the orb a second time to force it to stop listening and process text
+  if (turnState === "idle") {
+    startTurn();
+  } else if (turnState === "listening" && recognition) {
+    recognition.stop();
+  }
 });
 
 endBtn.addEventListener("click", cancelTurn);
