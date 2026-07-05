@@ -7,21 +7,6 @@
 // talks to Gemini directly in this flow.
 // ============================================================
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
-  .split(",")
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-function extractOrigin(headerValue) {
-  if (!headerValue) return null;
-  try {
-    const url = new URL(headerValue);
-    return `${url.protocol}//${url.host}`;
-  } catch {
-    return null;
-  }
-}
-
 // Gemini 2.0 Flash was shut down mid-2026 — this is the current
 // cost-efficient text model as of writing. If Google renames/replaces
 // it again later, this is the one line to update.
@@ -34,12 +19,6 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  const requestOrigin = extractOrigin(req.headers.origin) || extractOrigin(req.headers.referer);
-  if (allowedOrigins.length > 0 && !allowedOrigins.includes(requestOrigin)) {
-    console.warn(`Blocked /api/chat request from origin: ${requestOrigin || "(none)"}`);
-    return res.status(403).json({ error: "Forbidden" });
   }
 
   const { message } = req.body || {};
