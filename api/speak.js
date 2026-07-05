@@ -11,31 +11,10 @@
 // fish.audio if it's been longer than that).
 // ============================================================
 
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
-  .split(",")
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-function extractOrigin(headerValue) {
-  if (!headerValue) return null;
-  try {
-    const url = new URL(headerValue);
-    return `${url.protocol}//${url.host}`;
-  } catch {
-    return null;
-  }
-}
-
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  const requestOrigin = extractOrigin(req.headers.origin) || extractOrigin(req.headers.referer);
-  if (allowedOrigins.length > 0 && !allowedOrigins.includes(requestOrigin)) {
-    console.warn(`Blocked /api/speak request from origin: ${requestOrigin || "(none)"}`);
-    return res.status(403).json({ error: "Forbidden" });
   }
 
   const { text } = req.body || {};
