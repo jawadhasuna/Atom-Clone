@@ -1,20 +1,11 @@
 // ============================================================
 // Atom Voice — Turn-Based Cloned-Voice Chat
 // ============================================================
-// Flow per tap:
-//   1. Browser transcribes your speech to text (Web Speech API)
-//   2. Text -> /api/chat -> Gemini text reply
-//   3. Reply -> /api/speak -> Fish Audio audio in your cloned voice
-//   4. Play the audio, orb animates while it talks
-//
-// Nothing here needs an API key in the browser — both Gemini and
-// Fish Audio calls happen server-side in api/chat.js and api/speak.js.
-// ============================================================
 
 // Speech recognition transcribes based on the SPOKEN language, not
 // romanization — set this to match what you actually say out loud.
 // Examples: "en-US", "hi-IN" (Hindi), "ur-PK" (Urdu).
-const RECOGNITION_LANG = "hi-IN";
+const RECOGNITION_LANG = "ur-PK";
 
 // ---- DOM references ----
 const orb = document.getElementById("orb");
