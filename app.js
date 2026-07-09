@@ -5,7 +5,7 @@
 // Speech recognition transcribes based on the SPOKEN language, not
 // romanization — set this to match what you actually say out loud.
 // Examples: "en-US", "hi-IN" (Hindi), "ur-PK" (Urdu).
-const RECOGNITION_LANG = "en-US";
+const RECOGNITION_LANG = "ur-PK";
 
 // ---- DOM references ----
 const orb = document.getElementById("orb");
